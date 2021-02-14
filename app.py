@@ -1,6 +1,8 @@
 import requests
+import logging
 import os
 import random
+from flask_rabmq import RabbitMQ
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, request
 

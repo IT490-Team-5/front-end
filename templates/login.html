@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+  <!-- basic.html -->
+  <title>Login Star</title>
+  <meta charset = "UTF-8" />
+</head>
+<body>
+  <h1>Login Page</h1>
+  <p>
+ 	Welcome to Click Star!
+  </p>
+    <form action={{ url_for('start') }} >  
+        <div class="container">   
+            <label>Username : </label>   
+            <input type="text" placeholder="Enter Username" name="username" required>  
+            </br>
+            <label>Password : </label>   
+            <input type="password" placeholder="Enter Password" name="password" required> 
+            </br> 
+            <button type="submit">Login</button>   
+            </br>
+    	    <a href={{ url_for('newUser') }} >Register new user</a>
+        </div>   
+    </form> 
+  <script>
+  </script>
+</body>
+</html>

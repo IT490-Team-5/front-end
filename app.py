@@ -3,19 +3,26 @@ import logging
 import os
 import random
 from flask_rabmq import RabbitMQ
-from dotenv import load_dotenv, find_dotenv
+#from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-@app.route('/')
+@app.route('/',methods = ['GET', 'POST'])
 def form():
+    return render_template('login.html')
+@app.route('/start',methods = ['GET', 'POST'])
+def start():
     return render_template('index.html')
-    
+@app.route('/newUser',methods = ['GET', 'POST'])
+def newUser():
+    return render_template('register.html')
 app.run(
-   port=int(os.getenv('PORT',8080)),
-   host=os.getenv('IP','127.0.0.1'),
+   port=int(os.getenv('PORT',5000)),
+   host=os.getenv('IP','0.0.0.0'),
    debug=True
    )  
+    
+    

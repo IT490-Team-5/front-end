@@ -20,9 +20,9 @@ channel.queue_declare(queue='hello')
 
 @app.route('/form',methods = ['GET', 'POST'])
 def form():
-    #userR = str(request.form['usernameR'])
-    #passR = str(request.form['passwordR'])
-    #print(userR, passR)
+    userR = str(request.form['username'])
+    passR = str(request.form['password'])
+    print(userR, passR)
     return render_template('login.html')
     
     

@@ -1,4 +1,4 @@
-import requests
+mport requests
 import logging
 import os
 import random
@@ -12,9 +12,15 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route('/',methods = ['GET', 'POST'])
 def form():
+    newPass = str(request.form['password'])
+    newInfo = str(request.form['username'])
+    print(newPass,newInfo)
     return render_template('login.html')
 @app.route('/start',methods = ['GET', 'POST'])
 def start():
+    passw = str(request.form['password'])
+    info = str(request.form['username'])
+    print(info,passw)
     return render_template('index.html')
 @app.route('/newUser',methods = ['GET', 'POST'])
 def newUser():
@@ -24,5 +30,4 @@ app.run(
    host=os.getenv('IP','0.0.0.0'),
    debug=True
    )  
-    
     

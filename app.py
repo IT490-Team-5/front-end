@@ -11,37 +11,40 @@ app = Flask(__name__)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-credentials = pika.PlainCredentials('admin', 'admin')
-connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host ='25.121.196.54', port=5672, credentials=credentials))
-channel = connection.channel()
 
-channel.queue_declare(queue='hello')
+#credentials = pika.PlainCredentials('admin', 'admin')
+#connection = pika.BlockingConnection(
+#   pika.ConnectionParameters(host ='25.121.196.54', port=5672, credentials=credentials))
+#channel = connection.channel()
 
-@app.route('/form',methods = ['GET', 'POST'])
-def form():
-    newPass = str(request.form['password'])
-    newInfo = str(request.form['username'])
-    print(newPass,newInfo)
-    return render_template('login.html')
-    
-    
-@app.route('/start',methods = ['GET', 'POST'])
-def start():
-    #Handle if queue gives us a pass or fail from the login
-
-    info = str(request.form['username'])
-    passw = str(request.form['password'])
-    channel.basic_publish(exchange='', routing_key='hello', body= info)
-    print(info,passw)
-    return render_template('index.html')
-    
+#channel.queue_declare(queue='hello')
+#channel.queue_declare(queue='bye')
 @app.route('/',methods = ['GET', 'POST'])
 def newUser():
     return render_template('register.html')
+@app.route('/form',methods = ['GET', 'POST'])
+def form():
+    try:
+    	newPass = str(request.form['password'])
+    	newInfo = str(request.form['username'])
+    	#channel.basic_publish(exchange='', routing_key='hello', body=newInfo)
+    	print(newPass,newInfo)
+    	return render_template('login.html')
+    except KeyError:
+    	return render_template('login.html')	
+@app.route('/start',methods = ['GET', 'POST'])
+def start():
+    try:
+    	passw = str(request.form['password'])
+    	info = str(request.form['username'])
+    	#channel.basic_publish(exchange='', routing_key='hello', body=nfo)
+    	print(info,passw)
+    	return render_template('index.html')
+    except KeyError:
+    	return render_template('index.html')
 app.run(
    port=int(os.getenv('PORT',5000)),
    host=os.getenv('IP','0.0.0.0'),
    debug=True
    )  
-
+    

@@ -12,6 +12,8 @@ app = Flask(__name__)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
+global PassFail
+
 
 credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(
@@ -19,12 +21,21 @@ connection = pika.BlockingConnection(
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')
-channel.queue_declare(queue='bye')
+
+def callback(ch, method, properties, body):
+	info = json.loads(body)
+	if info.get('reason') == 'results':
+	#Then I got something
+	    PassFail = 1
+		
+
 
 
 @app.route('/',methods = ['GET', 'POST'])
 def newUser():
     return render_template('register.html')
+    
+    
 @app.route('/form',methods = ['GET', 'POST'])
 def form():
     try:
@@ -32,18 +43,37 @@ def form():
     	newInfo = str(request.form['username'])
     	message = {"from": "front", "reason": "create", "user": newInfo, "password": newPass}
     	msg_json = json.dumps(message)
+    	
     	channel.basic_publish(exchange='', routing_key='hello', body=msg_json)
+    	channel.basic_consume('front', callback, auto_ack = True)
+    	print("Waiting for result")
+    	
+    	
+    	channel.start_consuming()
     	return render_template('login.html')
+    		
+    		
     except KeyError:
     	return render_template('login.html')	
+    	
+    	
 @app.route('/start',methods = ['GET', 'POST'])
 def start():
     try:
     	passw = str(request.form['password'])
     	info = str(request.form['username'])
-    	channel.basic_publish(exchange='', routing_key='hello', body=nfo)
-    	print(info,passw)
-    	return render_template('index.html')
+    	message = {"from": "front", "reason": "login", "user": info, "password": passw}
+    	msg_json = json.dumps(message)
+    	
+    	channel.basic_publish(exchange='', routing_key='hello', body=msg_json)
+    	channel.basic_consume('front', callback, auto_ack = True)
+    	print("Waiting for result")
+    	
+    	channel.start_consuming()
+    	if(PassFail == 1):
+    		return render_template('index.html')
+    		
+    		
     except KeyError:
     	return render_template('index.html')
 app.run(

@@ -23,9 +23,9 @@ channel.queue_declare(queue='hello')
 def callback(ch, method, properties, body):
 	#We have gotten info from the database
 	info = json.loads(body)
-	print(info)
+	print('INFO HERE: ',info)
 	global En 
-	
+	En = 0
 	if(info.get('query2') == 'success'):
 	# then login
 		En = 1
@@ -36,7 +36,6 @@ def callback(ch, method, properties, body):
 		print("ya don goofed")
 	
 	channel.stop_consuming()
-
 
 @app.route('/',methods = ['GET', 'POST'])
 def newUser():
@@ -54,11 +53,13 @@ def form():
     	channel.basic_publish(exchange='', routing_key='hello', body=msg_json)
     	channel.basic_consume('front', callback, auto_ack = True)
     	print("Waiting for result")
-    	   	
+  	
     	channel.start_consuming()
     	
-    	if(En == 1): 
+    	if(En == 1):
+    		channel.stop_consuming()
     		return render_template('login.html')
+    	
     			
     except KeyError:
     	return render_template('login.html')	
@@ -70,14 +71,15 @@ def start():
     	info = str(request.form['username'])
     	message = {"from": "front", "reason": "login", "user": info, "password": passw}
     	msg_json = json.dumps(message)
-    	
     	channel.basic_publish(exchange='', routing_key='hello', body=msg_json)
     	channel.basic_consume('front', callback, auto_ack = True)
     	print("Waiting for result")
     	
     	channel.start_consuming()
-    	return render_template('index.html')
-    			
+    	print('In the login')
+    	if(En == 1):
+    		return render_template('index.html')
+   		
     except KeyError:
     	return render_template('index.html')
 app.run(

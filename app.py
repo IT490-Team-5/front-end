@@ -12,8 +12,6 @@ app = Flask(__name__)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-global PassFail
-
 
 credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(
@@ -23,12 +21,21 @@ channel = connection.channel()
 channel.queue_declare(queue='hello')
 
 def callback(ch, method, properties, body):
+	#We have gotten info from the database
 	info = json.loads(body)
-	if info.get('reason') == 'results':
-	#Then I got something
-	    PassFail = 1
-		
-
+	print(info)
+	global En 
+	
+	if(info.get('query2') == 'success'):
+	# then login
+		En = 1
+		print(En)
+	else:
+		En = 0
+		print(En)
+		print("ya don goofed")
+	
+	channel.stop_consuming()
 
 
 @app.route('/',methods = ['GET', 'POST'])
@@ -47,16 +54,15 @@ def form():
     	channel.basic_publish(exchange='', routing_key='hello', body=msg_json)
     	channel.basic_consume('front', callback, auto_ack = True)
     	print("Waiting for result")
-    	
-    	
+    	   	
     	channel.start_consuming()
-    	return render_template('login.html')
-    		
-    		
+    	
+    	if(En == 1): 
+    		return render_template('login.html')
+    			
     except KeyError:
     	return render_template('login.html')	
-    	
-    	
+    	    	
 @app.route('/start',methods = ['GET', 'POST'])
 def start():
     try:
@@ -70,10 +76,8 @@ def start():
     	print("Waiting for result")
     	
     	channel.start_consuming()
-    	if(PassFail == 1):
-    		return render_template('index.html')
-    		
-    		
+    	return render_template('index.html')
+    			
     except KeyError:
     	return render_template('index.html')
 app.run(

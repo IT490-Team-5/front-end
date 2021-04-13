@@ -1,0 +1,23 @@
+body {
+ 	min-height: 100%; 
+	background-color: #66ccff;
+	font-family: Arial, sans-serif;
+	background-size: cover;
+	background-position: center;
+}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.recenter {
+  margin: 0;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

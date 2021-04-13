@@ -3,15 +3,18 @@
 <head>
   <!-- basic.html -->
   <title>Click Star Home</title>
+  <link rel="stylesheet" href={{ url_for('static', filename='land.css')}}/>
   <meta charset = "UTF-8" />
 </head>
 <body>
-  <h1>Welcome to Click Star!</h1>
+
+  <h1 class="center">Welcome to Click Star!</h1>
     <form action={{ url_for('newUser') }} method="post" >  
         <div class="container">   
-	    <button type = "submit">Enter</button>
-        </div>   
+	    <button type = "submit" class="recenter">Enter</button>
+ 
     </form> 
+    </div>
   <script>
   </script>
 </body>

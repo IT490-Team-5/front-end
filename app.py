@@ -35,13 +35,21 @@ def callback(ch, method, properties, body):
 		print(En)
 		print("ya don goofed")
 	
-	channel.stop_consuming()
+	channel.basic_cancel(consumer_tag='front')
+
+def add_on_close_callback():
+	return render_template('login.html')
+
 
 
 @app.route('/',methods = ['GET', 'POST'])
-def newUser():
-    return render_template('register.html')
+def landing():
+    return render_template('landing.html')
     
+    
+@app.route("/register", methods = ['GET', 'POST'])
+def newUser():
+	return render_template('register.html')
     
 @app.route('/form',methods = ['GET', 'POST'])
 def form():

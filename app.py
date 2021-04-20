@@ -16,7 +16,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='25.121.196.54',
+    pika.ConnectionParameters(host='25.3.113.97',
                               port=5672,
                               virtual_host="vh1",
                               credentials=credentials))
@@ -26,7 +26,6 @@ channel.queue_declare(queue='hello')
 
 
 def callback(ch, method, properties, body):
-<<<<<<< HEAD
 	#We have gotten info from the database
 	info = json.loads(body)
 	print(info)
@@ -58,25 +57,6 @@ def newUser():
 	return render_template('register.html')
     
 @app.route('/form',methods = ['GET', 'POST'])
-=======
-    info = json.loads(body)
-    print('INFO HERE: ', info)
-    global En
-    En = 0
-    if (info.get('query2') == 'success'):
-        En = 1
-    else:
-        En = 0
-    channel.stop_consuming()
-
-
-@app.route('/', methods=['GET', 'POST'])
-def newUser():
-    return render_template('register.html', message='')
-
-
-@app.route('/form', methods=['GET', 'POST'])
->>>>>>> 937f4be7b9efedcfff0c47214e2760e3aa3ea5d4
 def form():
     try:
         newPass = str(request.form['password'])

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html{
 	border-left: 150px solid black;
  	border-right: 150px solid black;
@@ -12,6 +13,14 @@ html{
 	background-position: center;
 	position: relative;
 	
+=======
+body {
+ 	min-height: 100%; 
+	background-color: #66ccff;
+	font-family: Arial, sans-serif;
+	background-size: cover;
+	background-position: center;
+>>>>>>> 7ac41025dfc6ef5f146f29fc5baa8046c09e4a6f
 }
 .center {
   margin: 0;
@@ -20,7 +29,10 @@ html{
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7ac41025dfc6ef5f146f29fc5baa8046c09e4a6f
 }
 .recenter {
   margin: 0;
@@ -30,6 +42,7 @@ html{
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+<<<<<<< HEAD
  .left {
   margin: 0;
   position: absolute;
@@ -84,3 +97,5 @@ html{
   transform: translate(-103%, 170%);
 
 }
+=======
+>>>>>>> 7ac41025dfc6ef5f146f29fc5baa8046c09e4a6f

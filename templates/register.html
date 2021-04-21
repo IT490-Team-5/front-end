@@ -7,8 +7,9 @@
 </head>
 <body>
   <h1>Register New User Page</h1>
-    <form action= {{ url_for('form') }} method="post">
-        <div class="container">   
+    <form action= {{ url_for('login') }} method="post">
+        <div class="container">  
+            <p style="color: red;">{{message}} </p>
             <label for='username'> Username : </label>   
             <input type="text" placeholder="Enter Username" name="username" required>  
             </br>
@@ -17,7 +18,7 @@
             </br> 
             <button type="submit">Register</button>
             </br>   
-             <a href={{ url_for('form') }} >Return to login page</a>
+             <a href={{ url_for('login') }} >Go to login page</a>< 
     	    </div>   
     </form> 
   <script>

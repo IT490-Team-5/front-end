@@ -5,18 +5,14 @@
   <title>Click Star</title>
   <meta charset = "UTF-8" />
 </head>
-<body>
-  <h1>Click Star </h1>
+<body>  
+
+  <h1 >Click Star </h1>
   <p>
-    Its not much yet, but we got 3 months to make something
-    We can put the game in the script section, or have a login page that leads to the game
-    Could have both pages link to the rabbitmq
+ 	Welcome to Click Star {{name}}. Your current score is {{score}} > 0.
   </p>
-  <form action= {{ url_for('form') }} >
+  <form action= {{ url_for('login') }} >
         <input type="submit" value=" Return to login " />
-      </form>
-  <script>
-  
-  </script>
+  </form>
 </body>
 </html>

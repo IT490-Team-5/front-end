@@ -12,6 +12,7 @@
   </p>
     <form action={{ url_for('start') }} method="post" >  
         <div class="container">   
+            <p style="color: red;">{{message}} </p>
             <label  for="username">Username : </label>   
             <input type="text" placeholder="Enter Username" name="username" required>  
             </br>
@@ -20,10 +21,9 @@
             </br> 
             <button type="submit">Login</button>   
             </br>
-    	    <a href={{ url_for('newUser') }} >Register new user</a>
+    	    <a href={{ url_for('form') }} >Register new user</a>
         </div>   
     </form> 
-  <script>
-  </script>
+ 
 </body>
 </html>

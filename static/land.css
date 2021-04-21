@@ -1,0 +1,86 @@
+html{
+	border-left: 150px solid black;
+ 	border-right: 150px solid black;
+ 	min-height: 100%; 
+ 	border-image: url("https://static.thenounproject.com/png/1734671-200.png") 30;
+}
+ body {
+ 	min-height: 100%; 
+ 	border: 30px solid transparent;
+	font-family: Arial, sans-serif;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+	
+}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+}
+.recenter {
+  margin: 0;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+ .left {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-10%, -50%);
+  transform: translate(-10%, -50%);
+
+}
+ .leftD{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-10%, 200%);
+  transform: translate(-10%, 200%);
+
+}
+.right {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-250%, -100%);
+  transform: translate(-250%, -100%);
+
+}
+.rightD {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-620%,15%);
+  transform: translate(-620%, 15%);
+
+}
+ .rightDo {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-103%,20%);
+  transform: translate(-103%, 20%);
+
+}
+ .rightDow {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-103%,170%);
+  transform: translate(-103%, 170%);
+
+}

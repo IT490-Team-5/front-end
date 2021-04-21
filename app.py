@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+ #!/usr/bin/python -tt
 
 import requests
 import logging
@@ -12,8 +12,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 
 credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='25.3.113.97',
@@ -26,37 +25,26 @@ channel.queue_declare(queue='hello')
 
 
 def callback(ch, method, properties, body):
-	#We have gotten info from the database
-	info = json.loads(body)
-	print(info)
-	global En 
-	
-	if(info.get('query2') == 'success'):
-	# then login
-		En = 1
-		print(En)
-	else:
-		En = 0
-		print(En)
-		print("ya don goofed")
-	
-	channel.basic_cancel(consumer_tag='front')
-
-def add_on_close_callback():
-	return render_template('login.html')
+    info = json.loads(body)
+    print('INFO HERE: ', info)
+    global En
+    En = 0
+    if (info.get('query2') == 'success'):
+        En = 1
+    else:
+        En = 0
+    channel.stop_consuming()
 
 
-
-@app.route('/',methods = ['GET', 'POST'])
-def landing():
-    return render_template('landing.html')
-    
-    
-@app.route("/register", methods = ['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def newUser():
-	return render_template('register.html')
+    return render_template('register.html', message='')
     
-@app.route('/form',methods = ['GET', 'POST'])
+@app.route('/landing', methods=['GET', 'POST'])
+def landing():
+    return render_template('landing.html', message='')
+
+@app.route('/form', methods=['GET', 'POST'])
 def form():
     try:
         newPass = str(request.form['password'])
@@ -124,4 +112,3 @@ def start():
 app.run(port=int(os.getenv('PORT', 5000)),
         host=os.getenv('IP', '0.0.0.0'),
         debug=True)
-

@@ -1,0 +1,4 @@
+background-image: url("https://i.pinimg.com/originals/ea/27/4e/ea274eee4ef77877bd63741d558866c5.gif");
+background-image: url('https://i.pinimg.com/originals/ea/27/4e/ea274eee4ef77877bd63741d558866c5.gif');
+border-image: url('https://i.pinimg.com/originals/ea/27/4e/ea274eee4ef77877bd63741d558866c5.gif') 20;
+

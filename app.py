@@ -11,7 +11,6 @@ from flask_rabmq import RabbitMQ
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 
 credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(
@@ -36,19 +35,19 @@ def callback(ch, method, properties, body):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def newUser():
-    return render_template('register.html', message='')
-    
-@app.route('/landing', methods=['GET', 'POST'])
 def landing():
     return render_template('landing.html', message='')
-
+    
 @app.route('/form', methods=['GET', 'POST'])
 def form():
+    return render_template('register.html', message='')
+ 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     try:
         newPass = str(request.form['password'])
         newInfo = str(request.form['username'])
-
+  	
         message = {
             "from": "front",
             "reason": "create",
@@ -70,9 +69,9 @@ def form():
             return render_template(
                 'register.html',
                 message='ALERT: Username already exists. Try again.')
-
     except KeyError:
         return render_template('login.html', message='')
+        
 
 
 @app.route('/start', methods=['GET', 'POST'])
@@ -80,7 +79,7 @@ def start():
     try:
         passw = str(request.form['password'])
         info = str(request.form['username'])
-
+ 	
         message = {
             "from": "front",
             "reason": "login",
@@ -103,6 +102,7 @@ def start():
             return render_template(
                 'login.html',
                 message='ALERT: Username has not been registered. Try again.')
+
 
     except KeyError:
         return render_template('index.html', message='')

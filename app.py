@@ -20,17 +20,9 @@ connection = pika.BlockingConnection(
                               virtual_host="vh1",
                               credentials=credentials))
 channel = connection.channel()
-<<<<<<< HEAD
 
 channel.queue_declare(queue='hello')
 
-
-=======
-
-channel.queue_declare(queue='hello')
-
-
->>>>>>> 7ac41025dfc6ef5f146f29fc5baa8046c09e4a6f
 def callback(ch, method, properties, body):
     info = json.loads(body)
     print('INFO HERE: ', info)
@@ -42,18 +34,6 @@ def callback(ch, method, properties, body):
         En = 0
     channel.stop_consuming()
 
-<<<<<<< HEAD
-@app.route('/', methods=['GET', 'POST'])
-def landing():
-    return render_template('landing.html', message='')
-    
-@app.route('/form', methods=['GET', 'POST'])
-def form():
-    return render_template('register.html', message='')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-=======
 
 @app.route('/', methods=['GET', 'POST'])
 def newUser():
@@ -65,7 +45,6 @@ def landing():
 
 @app.route('/form', methods=['GET', 'POST'])
 def form():
->>>>>>> 7ac41025dfc6ef5f146f29fc5baa8046c09e4a6f
     try:
         newPass = str(request.form['password'])
         newInfo = str(request.form['username'])

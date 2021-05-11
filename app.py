@@ -26,6 +26,8 @@ def callback(ch, method, properties, body):
     info = json.loads(body)
     print('INFO HERE: ', info)
     global En
+    global score 
+    score = info.get('score')
     En = 0
     if (info.get('query2') == 'success'):
         En = 1
@@ -94,10 +96,10 @@ def start():
 
         channel.start_consuming()
         if (En == 1):
-            return render_template('index.html',
+            return render_template('GameVersion.html',
                                    message='',
                                    name=info,
-                                   score=100)
+                                   score = score)
         else:
             return render_template(
                 'login.html',
@@ -105,8 +107,8 @@ def start():
 
 
     except KeyError:
-        return render_template('index.html', message='')
-
+        return render_template('GameVersion.html', message='')
+        
 
 app.run(port=int(os.getenv('PORT', 5000)),
         host=os.getenv('IP', '0.0.0.0'),

@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+  <!-- basic.html -->
+  <title>Click Star</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border: 10px dashed black;
+    background-color: gray;
+    background-image: url('https://media.giphy.com/media/4RLQeSPjq5tIc/giphy.gif');
+    background-size: cover;
+    
+}
+</style>
+</head>
+<body onload="startGame()">  
+
+  <h1 >Click Star </h1>
+  <h2 id=Question> </h2>
+  <h3 id = Points> </h3>
+  <p>
+ 	Welcome to Click Star {{name}}. Your current score is {{score}} > 0.
+  </p>
+
+  <button id=Add onclick=AddGenerate()>Addition</button>
+  <button id=Sub onclick=SubGenerate()>Subtraction</button>
+  <button id=Mul onclick=MulGenerate()>Multiplication</button>
+  <button id=Div onclick=DivGenerate()>Division</button>
+
+  <form action= {{ url_for('login') }} >
+        <input type="submit" value=" Return to login " />
+  </form>
+</body>
+
+<script>
+
+//Initial Game Setup
+var canvasWidth = 1200
+var canvasHeight = 760
+var PointTracker = 0
+var toggle = 1
+var q1 = GetRandomNum(1, 10)
+var q2 = GetRandomNum(1,10)
+var qanswer = q1 + q2
+document.getElementById("Question").innerHTML = q1.toString() + " + " + q2.toString() + " = ? "
+document.getElementById("Points").innerHTML = PointTracker.toString()
+var ActiveAnswer = false
+
+
+function AddGenerate(){
+    //Generates a new question when called
+    q1 = GetRandomNum(25, 250);
+    q2 = GetRandomNum(30,450);
+    qanswer = q1 + q2;
+    document.getElementById("Question").innerHTML = q1.toString() + " + " + q2.toString() + " = ? ";
+    ActiveAnswer = false;
+    toggle = 1;
+    RefreshStars();
+}
+
+function SubGenerate(){
+    //Generates a new question when called
+    q1 = GetRandomNum(100, 250);
+    q2 = GetRandomNum(50, 450);
+    qanswer = Math.max(q1, q2) - Math.min(q1, q2)
+    document.getElementById("Question").innerHTML = Math.max(q1, q2).toString() + " - " + Math.min(q1, q2).toString() + " = ? ";
+    ActiveAnswer = false;
+    toggle = 2;
+    RefreshStars();
+}
+
+function MulGenerate(){
+    //Generates a new question when called
+    q1 = GetRandomNum(1, 50);
+    q2 = GetRandomNum(1, 50);
+    qanswer = q1 * q2
+    document.getElementById("Question").innerHTML = q1.toString() + " * " + q2.toString() + " = ? ";
+    ActiveAnswer = false;
+    toggle = 3;
+    RefreshStars();
+}
+
+function DivGenerate(){
+    //Generates a new question when called
+    q1 = GetRandomNum(1, 200);
+    q2 = GetRandomNum(1, 50);
+
+    while(Math.max(q1,q2) % Math.min(q1,q2) != 0 )
+    {
+        q1 = GetRandomNum(1, 200);
+        q2 = GetRandomNum(1, 50);
+    }
+
+    qanswer = Math.max(q1,q2) / Math.min(q1,q2)
+    document.getElementById("Question").innerHTML = Math.max(q1, q2).toString() + " / " + Math.min(q1, q2).toString() + " = ? ";
+    ActiveAnswer = false;
+    toggle = 4;
+    RefreshStars();
+}
+
+function QuestionCheck(){
+    if(toggle == 1){
+        AddGenerate();
+    }
+    if(toggle == 2){
+        SubGenerate();
+    }
+    if(toggle == 3){
+        DivGenerate();
+    }
+    if(toggle == 4){
+        MulGenerate();
+    }
+}
+
+function GetRandomNum(min, max){
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+
+function startGame() {
+
+    StarList = []
+    myGameArea.start();
+
+    for(i=0; i < 15; i++){
+        var randomspot = Math.floor(Math.random() * 1100) +1
+        var randomspot2 = Math.floor(Math.random() * 730) + 1
+        StarList.push(new component(50,50,"https://i.gifer.com/origin/27/277585ccb134133252f1eecfb77dcbea_w200.gif",randomspot,randomspot2,"image"));
+    }
+
+    myGameArea.x = 0;
+    myGameArea.y = 0;
+}
+
+function RefreshStars() {
+    for(i = 0; i<StarList.length; i++){
+        if(StarList[i].answer == false){
+
+            if( Math.floor(Math.random() * 11) > 5){
+                StarList[i].number = qanswer + GetRandomNum(1,20);
+            }
+            else{
+                StarList[i].number = qanswer + GetRandomNum(-1,-20);
+            }
+
+            if(StarList[i].number < 0 )
+            {
+                StarList[i].number = GetRandomNum(1,5)
+            }
+
+            
+        }      
+    }
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
+        this.context = this.canvas.getContext("2d");
+        this.canvas.style.cursor = "default"; //hidden mouse 
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+
+        window.addEventListener('mousedown', function (e) {
+           myGameArea.x = e.pageX;
+           myGameArea.y = e.pageY;
+        })
+
+        window.addEventListener('mouseup', function (e) {
+            myGameArea.x = false;
+            myGameArea.y = false;
+        })
+
+        },
+    stop : function() {
+        clearInterval(this.interval);
+    },    
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+ function component(width, height, color, x, y, type) {
+
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 1;
+    this.speedY = -2;
+    this.x = x;
+    this.y = y;    
+    this.answer = false
+    this.number = GetRandomNum(q1, (qanswer + 50))
+
+    //Update Draws the star in it's new position
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (type == "image") {
+            ctx.drawImage(this.image, 
+                this.x, 
+                this.y,
+                this.width, this.height);
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+    }
+
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;  
+        
+        //The code here checks if any star can become an answer
+        if(ActiveAnswer == false)
+        {
+            //Roll for a chance to become the answer
+            this.answer = true
+            this.number = qanswer
+            ActiveAnswer = true
+        }
+
+        //These two if statements check if the number has gone out of bounds, if it has give yourself a new number if you're not the correct answer.
+        if(this.x > canvasWidth)
+        {
+            this.x = GetRandomNum(10, 50)
+            if (this.answer == false)
+            {
+                this.number = qanswer + GetRandomNum(1,50)
+            }
+        }
+
+        if (this.y <= 0){
+            this.y = GetRandomNum(700, 750)
+            if (this.answer == false)
+            {
+                this.number = qanswer + GetRandomNum(1,50)
+            }
+        }
+
+    }
+
+    //Checks if I'm being clicked on. 
+    this.clicked = function() {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var clicked = true;
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+            clicked = false;
+        }
+        return clicked;
+    }
+
+    this.checkAns = function() {
+        if(this.answer == true){
+            myGameArea.x = -1
+            myGameArea.y = -1
+            //Create new question based on toggle
+            QuestionCheck();
+            this.number = qanswer
+            PointTracker = PointTracker + 100;
+            document.getElementById("Points").innerHTML = PointTracker.toString()
+            //TODO : Award points to the user here might be overkill to send messages to the database on every correct answer
+            //May be worth considering a collect points button that will send the info over when the user is ready
+
+        }
+        else{
+            myGameArea.x = -1
+            myGameArea.y = -1
+            this.number = qanswer + GetRandomNum(1,50)
+        }
+    }
+
+    //This function updates text on any star
+    this.text = function ()
+    {
+        myGameArea.context.font = "20px Arial";
+        myGameArea.context.fillText(this.number, this.x, this.y)
+    }
+
+}
+
+//Main game loop, updates all stars in the star array
+function updateGameArea() {
+    myGameArea.clear();
+    for(i = 0; i<StarList.length; i++){
+        StarList[i].newPos();
+        StarList[i].text();
+        StarList[i].update();
+        if(StarList[i].clicked() == true){
+            StarList[i].checkAns();
+        }
+    }
+
+}
+
+</script>
+</html>
